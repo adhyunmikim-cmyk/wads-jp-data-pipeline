@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[JP] 데이터 자동화 프로젝트 — Weekly 보고</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#ffffff !important;color:#111;padding:1rem 1.5rem;max-width:860px;margin:0 auto;font-size:12px}
+.wrap{padding:0.8rem 0}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;padding-bottom:0.7rem;border-bottom:1px solid #e5e5e5}
+.header-left h1{font-size:15px;font-weight:500;color:#111}
+.header-left p{font-size:11px;color:#666;margin-top:3px}
+.header-right{text-align:right;font-size:11px;color:#666}
+.header-right strong{display:block;font-size:13px;font-weight:500;color:#111}
+.section-title{font-size:11px;font-weight:500;color:#666;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:7px}
+.phase-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:1rem}
+.phase-card{border-radius:6px;border:0.5px solid #e5e5e5;padding:7px 9px;background:#fff}
+.phase-card.done{background:#f0fdf4;border-color:#bbf7d0}
+.phase-card.active{border:2px solid #00A84B;background:#f0fdf7}
+.phase-card.upcoming{background:#f9f9f9}
+.phase-label{font-size:10px;font-weight:500;margin-bottom:2px}
+.phase-card.done .phase-label{color:#166534}
+.phase-card.active .phase-label{color:#00A84B}
+.phase-card.upcoming .phase-label{color:#aaa}
+.phase-name{font-size:11px;font-weight:500;color:#111}
+.phase-week{font-size:10px;color:#888;margin-top:1px}
+.phase-badge{display:inline-block;font-size:9px;padding:1px 6px;border-radius:20px;margin-top:4px;font-weight:500}
+.badge-done{background:#dcfce7;color:#166534}
+.badge-active{background:#e8fdf2;color:#00A84B}
+.badge-upcoming{background:#f3f4f6;color:#aaa}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0.9rem}
+.card{background:#fff;border:0.5px solid #e5e5e5;border-radius:8px;padding:0.7rem 0.9rem}
+.card-title{font-size:11px;font-weight:500;color:#111;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-green{background:#00A84B}
+.dot-amber{background:#BA7517}
+.dot-blue{background:#185FA5}
+.dot-red{background:#DC2626}
+.item{font-size:11.5px;color:#555;padding:4px 0;border-bottom:0.5px solid #f0f0f0;display:flex;align-items:flex-start;gap:6px;line-height:1.45}
+.item:last-child{border-bottom:none}
+.item-check{width:12px;height:12px;border-radius:3px;border:1.5px solid #00A84B;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.item-check.done{background:#00A84B;border-color:#00A84B}
+.item-check.done::after{content:'';width:3px;height:6px;border:1.5px solid white;border-top:none;border-left:none;transform:rotate(45deg);margin-top:-1px}
+.item-check.pending{border-color:#ccc;background:transparent}
+.item-wrap{flex:1;min-width:0}
+.item-sub{font-size:10px;color:#999;margin-top:2px;line-height:1.4}
+.tag{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:500;margin-left:auto;flex-shrink:0}
+.tag-done{background:#e8fdf2;color:#00A84B}
+.tag-inprogress{background:#faeeda;color:#BA7517}
+.tag-waiting{background:#fef2f2;color:#DC2626}
+.tag-confirm{background:#e6f1fb;color:#185FA5}
+.tag-phase{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:500;margin-right:2px;flex-shrink:0;white-space:nowrap}
+.tag-p1{background:#e8fdf2;color:#166534}
+.tag-p2{background:#faeeda;color:#854d0e}
+.bq-table{width:100%;border-collapse:collapse;font-size:11px}
+.bq-table th{background:#f9f9f9;color:#666;font-weight:500;padding:4px 8px;border-bottom:1px solid #e5e5e5;text-align:left}
+.bq-table td{padding:3px 8px;border-bottom:0.5px solid #f0f0f0;color:#555;vertical-align:top}
+.bq-table tr:last-child td{border-bottom:none}
+.bq-ok{color:#166534;font-weight:500}
+.bq-warn{color:#854d0e;font-weight:500}
+.bq-block{color:#DC2626;font-weight:500}
+.bq-plan{color:#666;font-weight:500}
+.full-card{background:#fff;border:0.5px solid #e5e5e5;border-radius:8px;padding:0.7rem 0.9rem;margin-bottom:0.9rem}
+.issue-card{border-radius:6px;padding:8px 10px;font-size:11.5px;line-height:1.55;margin-bottom:6px}
+.issue-card:last-child{margin-bottom:0}
+.issue-warn{background:#fef2f2;border:0.5px solid #fecaca;color:#991B1B}
+.issue-legal{background:#f5f3ff;border:0.5px solid #c4b5fd;color:#5B21B6}
+.confirm-group-title{font-size:10.5px;font-weight:600;color:#666;margin:7px 0 3px 0;padding-bottom:3px;border-bottom:0.5px solid #f0f0f0}
+.confirm-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid #f0f0f0;font-size:11.5px}
+.confirm-row:last-child{border-bottom:none}
+.confirm-num{width:18px;height:18px;border-radius:50%;background:#185FA5;color:white;font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.confirm-text{color:#111;flex:1;line-height:1.45}
+.confirm-sub{font-size:10px;color:#888;margin-top:1px}
+.confirm-status{font-size:10px;padding:1px 7px;border-radius:20px;flex-shrink:0;margin-top:2px}
+@media print{
+  body{padding:0.5rem 1rem;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .full-card,.card,.phase-card,.two-col{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>[JP] 데이터 자동화 프로젝트 — Weekly 보고</h1>
+      <p>GCS &amp; BigQuery 수집·적재 자동화 · 담당: A · 검토: 규호님, 슬기님, 지윤님</p>
+    </div>
+    <div class="header-right">
+      <strong>W9~10 / 20주</strong>
+      <span>2026.06.09</span>
+    </div>
+  </div>
+
+  <div class="section-title">전체 진행 현황</div>
+  <div class="phase-row">
+    <div class="phase-card done">
+      <div class="phase-label">Phase 0</div>
+      <div class="phase-name">환경 준비</div>
+      <div class="phase-week">W1~2</div>
+      <span class="phase-badge badge-done">완료</span>
+    </div>
+    <div class="phase-card done">
+      <div class="phase-label">Phase 1</div>
+      <div class="phase-name">수집 파이프라인</div>
+      <div class="phase-week">W3~7</div>
+      <span class="phase-badge badge-done">완료</span>
+    </div>
+    <div class="phase-card active">
+      <div class="phase-label">Phase 2</div>
+      <div class="phase-name">BQ 적재 자동화</div>
+      <div class="phase-week">W8~12</div>
+      <span class="phase-badge badge-active">진행 중</span>
+    </div>
+    <div class="phase-card upcoming">
+      <div class="phase-label">Phase 3</div>
+      <div class="phase-name">대시보드 검토</div>
+      <div class="phase-week">W13~16</div>
+      <span class="phase-badge badge-upcoming">예정</span>
+    </div>
+    <div class="phase-card upcoming">
+      <div class="phase-label">Phase 4</div>
+      <div class="phase-name">안정화·공유</div>
+      <div class="phase-week">W17~20</div>
+      <span class="phase-badge badge-upcoming">예정</span>
+    </div>
+  </div>
+
+  <!-- BQ 테스트 적재 현황 -->
+  <div class="full-card">
+    <div class="card-title"><span class="dot dot-blue"></span>BQ 마트 테스트 적재 현황 — mart_jp_network</div>
+    <table class="bq-table">
+      <thead>
+        <tr><th>네트워크</th><th>테스트 상태</th><th>소스</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>AMoAd</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>대시보드 추출 자동화</td><td>API 미제공 · 대시보드 접속→다운로드 자동화</td></tr>
+        <tr><td><strong>Applovin</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>BidMachine</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>DT Exchange (Fyber)</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>GFP</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td>gfp / gfp_request 분리</td></tr>
+        <tr><td><strong>Google AdMob</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>InMobi</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>LINE Ad Network (LAN)</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td>line_da / line_rv 분리</td></tr>
+        <tr><td><strong>Liftoff (Vungle)</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>Maio</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>Moloco</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>Pangle</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>Skyfall</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>대시보드 추출 자동화</td><td>API 미제공 · 대시보드 접속→다운로드 자동화 · AOS+iOS 합산</td></tr>
+        <tr><td><strong>Unity</strong></td><td class="bq-ok">✓ 테스트 완료</td><td>API + manual</td><td></td></tr>
+        <tr><td><strong>ironSource</strong></td><td class="bq-warn">🔍 확인 중</td><td>API + manual</td><td>매출 재발생 여부 확인 중</td></tr>
+        <tr><td><strong>Mintegral</strong></td><td class="bq-warn">🚧 이슈</td><td>API + manual</td><td>2026-04-01~ manual 컬럼 상이 → 확인 필요</td></tr>
+        <tr><td><strong>nend</strong></td><td class="bq-warn">📭 데이터 없음</td><td>manual 전용</td><td>API 연동 끊김 · 과거 데이터만 존재 · manual 업로드 상태 확인 필요</td></tr>
+        <tr><td><strong>Meta Audience Network</strong></td><td class="bq-plan">🔜 진행 예정</td><td>API</td><td>계정 확인 후 연동 예정</td></tr>
+        <tr><td><strong>Direct Sales</strong></td><td class="bq-plan">🔜 검토 예정</td><td>Google Sheets</td><td>deal_type='Direct' 자동화 가능 여부 검토 예정</td></tr>
+        <tr><td><strong>Fluct (EBJ)</strong></td><td class="bq-block">⚖️ 법적 검토 중</td><td>—</td><td>LY→LDF→WBTN 경로 확인 중</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 지난 주 완료 / 이번 주 진행 중 -->
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-green"></span>지난 주 완료 (W8~9)</div>
+      <div class="item">
+        <div class="item-check done"></div>
+        <span><span class="tag-phase tag-p1">P1</span>2026.05~ API 호출 데이터 자동 적재 설정</span>
+        <span class="tag tag-done">완료</span>
+      </div>
+      <div class="item">
+        <div class="item-check done"></div>
+        <span><span class="tag-phase tag-p1">P1</span>AMoAd 대시보드 데이터 다운로드 프로세스 자동화</span>
+        <span class="tag tag-done">완료</span>
+      </div>
+      <div class="item">
+        <div class="item-check done"></div>
+        <span><span class="tag-phase tag-p2">P2</span>BQ FACT 테이블 표준화 문서 컨펌 후 스키마 구현</span>
+        <span class="tag tag-done">완료</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>이번 주 진행 중 (W9~10)</div>
+      <div class="item">
+        <div class="item-check pending"></div>
+        <div class="item-wrap">
+          <span><span class="tag-phase tag-p2">P2</span>mart_jp_network 마트 테이블 구축 테스트 (manual + api)</span>
+          <div class="item-sub">파이프라인 이슈 해결 · 환율 적용 로직 정상화 포함</div>
+        </div>
+        <span class="tag tag-inprogress">진행 중</span>
+      </div>
+      <div class="item">
+        <div class="item-check pending"></div>
+        <div class="item-wrap">
+          <span><span class="tag-phase tag-p2">P2</span>네트워크별 마트 테이블 구성 · 표준화 작업</span>
+          <div class="item-sub">테스트 테이블 생성 후 네트워크 하나씩 순차 구성 중 · manual+api UNION · DA(ad_unit/slot) 구분 · ad_unit 매핑 포함</div>
+        </div>
+        <span class="tag tag-inprogress">진행 중</span>
+      </div>
+      <div class="item">
+        <div class="item-check pending"></div>
+        <span><span class="tag-phase tag-p1">P1</span>신규 OW 런칭 건 집계 방식 확인 및 반영 예정</span>
+        <span class="tag tag-inprogress">이번 주</span>
+      </div>
+      <div class="item">
+        <div class="item-check pending"></div>
+        <span><span class="tag-phase tag-p1">P1</span>Direct Sales 자동화 가능 여부 검토 예정</span>
+        <span class="tag tag-inprogress">이번 주</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 이슈 + 컨펌 -->
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title" style="margin-bottom:7px">이슈 · 리스크</div>
+      <div class="issue-card issue-warn">
+        ⚠️ <strong>ironSource</strong> 매출 재발생 여부 확인 중
+      </div>
+      <div class="issue-card issue-warn">
+        ⚠️ <strong>Mintegral</strong> 2026-04-01~ manual 데이터 컬럼 상이 · 확인 필요
+      </div>
+      <div class="issue-card issue-legal">
+        ⚖️ <strong>EBJ 데이터 수집 법적 제한</strong><br>
+        LY 데이터 직접 접근 불가 (LY→WBTN NG) · LDF 경유(LY→LDF→WBTN) 방식 확인 중 · 총무성 지적 상황으로 신중한 접근 필요
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom:4px"><span class="dot dot-blue"></span>컨펌 요청 사항</div>
+
+      <div class="confirm-group-title">① DA 지면 구분 확정</div>
+      <div class="confirm-row">
+        <div class="confirm-num">1</div>
+        <div class="confirm-text">LAN DA · GFP 슬롯 구분 기준
+          <div class="confirm-sub">LAN_iOS_High/Mid/Low · GFP Ad Unit 구분 체계 확정 필요 (첨부 PDF 검토 요청)</div>
+        </div>
+        <span class="confirm-status tag tag-confirm">검토 요청</span>
+      </div>
+
+      <div class="confirm-group-title">② RV 지면 구분 확정</div>
+      <div class="confirm-row">
+        <div class="confirm-num">2</div>
+        <div class="confirm-text">네트워크별 Gacha / Read 매핑 기준
+          <div class="confirm-sub">각 네트워크 placement명 → Gacha / Read 분류 기준 확정 필요 (첨부 PDF 검토 요청)</div>
+        </div>
+        <span class="confirm-status tag tag-confirm">검토 요청</span>
+      </div>
+
+      <div class="confirm-group-title">③ 신규 OW 오픈 일자 공유</div>
+      <div class="confirm-row">
+        <div class="confirm-num">3</div>
+        <div class="confirm-text">LM 신규 OW 런칭 일자 및 집계 방식
+          <div class="confirm-sub">오픈 일자 확인 후 파이프라인 반영 예정</div>
+        </div>
+        <span class="confirm-status tag tag-waiting" style="background:#fef2f2;color:#DC2626">공유 요청</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
