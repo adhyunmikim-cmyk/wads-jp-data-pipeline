@@ -37,7 +37,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .dot-amber{background:#BA7517}
 .dot-blue{background:#185FA5}
 .dot-red{background:#DC2626}
-.dot-purple{background:#7C3AED}
 .item{font-size:11.5px;color:#555;padding:4px 0;border-bottom:0.5px solid #f0f0f0;display:flex;align-items:flex-start;gap:6px;line-height:1.45}
 .item:last-child{border-bottom:none}
 .item-check{width:12px;height:12px;border-radius:3px;border:1.5px solid #00A84B;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
@@ -55,10 +54,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tag-p1{background:#e8fdf2;color:#166534}
 .tag-p2{background:#faeeda;color:#854d0e}
 .tag-p3{background:#e6f1fb;color:#0c447c}
+.tag-p4{background:#f3e8ff;color:#6D28D9}
 /* 마트 테이블 목록 */
-.mart-table{width:100%;border-collapse:collapse;font-size:11px}
+.mart-table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
 .mart-table th{background:#f9f9f9;color:#666;font-weight:500;padding:5px 8px;border-bottom:1px solid #e5e5e5;text-align:left;white-space:nowrap}
-.mart-table td{padding:4px 8px;border-bottom:0.5px solid #f0f0f0;color:#555;vertical-align:top;line-height:1.5}
+.mart-table td{padding:4px 8px;border-bottom:0.5px solid #f0f0f0;color:#555;vertical-align:top;line-height:1.5;word-break:break-word}
 .mart-table tr:last-child td{border-bottom:none}
 .mart-table code{font-family:'SF Mono',Consolas,monospace;font-size:10.5px;background:#f3f4f6;padding:1px 5px;border-radius:3px;color:#111}
 .badge-rv{background:#e8fdf2;color:#166534;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
@@ -70,15 +70,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .badge-tbl{background:#fdf4ff;color:#7C3AED;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
 .badge-dim{background:#f0fdf4;color:#166534;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
 .section-banner{background:#f0fdf7;border-left:3px solid #00A84B;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#166534;border-radius:0 4px 4px 0}
-.section-banner-blue{background:#f0f4ff;border-left:3px solid #185FA5;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#185FA5;border-radius:0 4px 4px 0}
+.section-banner-gray{background:#f9f9f9;border-left:3px solid #aaa;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#555;border-radius:0 4px 4px 0}
 .section-banner-purple{background:#fdf4ff;border-left:3px solid #7C3AED;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#6D28D9;border-radius:0 4px 4px 0}
 .section-banner-amber{background:#fffbeb;border-left:3px solid #BA7517;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#854d0e;border-radius:0 4px 4px 0}
 .full-card{background:#fff;border:0.5px solid #e5e5e5;border-radius:8px;padding:0.7rem 0.9rem;margin-bottom:0.9rem}
-.issue-card{border-radius:6px;padding:8px 10px;font-size:11.5px;line-height:1.55;margin-bottom:6px}
-.issue-card:last-child{margin-bottom:0}
-.issue-info{background:#f0f4ff;border:0.5px solid #a5b4fc;color:#3730a3}
-.issue-legal{background:#f5f3ff;border:0.5px solid #c4b5fd;color:#5B21B6}
-.issue-warn{background:#fef2f2;border:0.5px solid #fecaca;color:#991B1B}
+.milestone{background:#f0fdf7;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:0.9rem;font-size:12px;color:#166534}
+.milestone strong{font-size:13px}
 .confirm-group-title{font-size:10.5px;font-weight:600;color:#666;margin:7px 0 3px 0;padding-bottom:3px;border-bottom:0.5px solid #f0f0f0}
 .confirm-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid #f0f0f0;font-size:11.5px}
 .confirm-row:last-child{border-bottom:none}
@@ -86,8 +83,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .confirm-text{color:#111;flex:1;line-height:1.45}
 .confirm-sub{font-size:10px;color:#888;margin-top:1px}
 .confirm-status{font-size:10px;padding:1px 7px;border-radius:20px;flex-shrink:0;margin-top:2px}
-.milestone{background:#f0fdf7;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:0.9rem;font-size:12px;color:#166534}
-.milestone strong{font-size:13px}
+.info-card{background:#f0f4ff;border:0.5px solid #a5b4fc;border-radius:6px;padding:8px 10px;font-size:11.5px;line-height:1.55;margin-bottom:6px;color:#3730a3}
+.warn-card{background:#fef2f2;border:0.5px solid #fecaca;border-radius:6px;padding:8px 10px;font-size:11.5px;line-height:1.55;margin-bottom:6px;color:#991B1B}
+.warn-card:last-child,.info-card:last-child{margin-bottom:0}
 @media print{
   body{padding:0.5rem 1rem;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .full-card,.card,.phase-card,.two-col{break-inside:avoid}
@@ -103,12 +101,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <p>GCS &amp; BigQuery 수집·적재 자동화 · 담당: A · 검토: 규호님, 슬기님, 지윤님</p>
     </div>
     <div class="header-right">
-      <strong>W14~15 / 20주</strong>
-      <span>2026.07.14</span>
+      <strong>W15~16 / 20주</strong>
+      <span>2026.07.21</span>
     </div>
   </div>
 
-  <!-- Phase -->
   <div class="section-title">전체 진행 현황</div>
   <div class="phase-row">
     <div class="phase-card done">
@@ -145,8 +142,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
   <!-- 마일스톤 -->
   <div class="milestone">
-    🎉 <strong>Phase 2 완료 — BQ 마트 테이블 전체 구축 및 검증 완료 (2026-07-11 기준)</strong><br>
-    <span style="font-size:11px">네트워크 실적 L1 32개 + L2/L3 통합 마트 4개 · 적재 전체 기간 기준 Power BI 매출 일치 확인 완료 · 일부 확인 필요 항목 별도 공유 예정</span>
+    🎉 <strong>전체 기간 정합성 검증 완료 (2026-07-15 기준)</strong><br>
+    <span style="font-size:11px">L1 32개 네트워크 마트 + L2/L3/KPI 통합 마트 · 전체 적재 기간 Power BI 매출 완전일치 확인 · mart_l3_jp_kpi_total 구축 완료 · 자체구축 BI 및 WDL 연동 예정</span>
   </div>
 
   <!-- BQ 마트 테이블 목록 -->
@@ -156,126 +153,118 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <!-- ① 네트워크 실적 L1 -->
     <div class="section-banner">① 네트워크 실적 마트 (L1) — View · GCS 신규 파일 자동 반영</div>
     <table class="mart-table" style="margin-bottom:10px">
-      <thead>
-        <tr><th>테이블명</th><th>network</th><th>ad_type</th><th>수집방식</th><th>데이터기간</th><th>비고</th></tr>
-      </thead>
+      <colgroup><col style="width:23%"><col style="width:18%"><col style="width:7%"><col style="width:17%"><col style="width:17%"><col style="width:18%"></colgroup>
+      <thead><tr><th>테이블명</th><th>network</th><th>ad_type</th><th>수집방식</th><th>데이터기간</th><th>비고</th></tr></thead>
       <tbody>
         <tr><td><code>mart_amoad</code></td><td>amoad</td><td><span class="badge-rv">RV</span></td><td>DL (대시보드 자동화)</td><td>2025~현재</td><td>API 미지원</td></tr>
-        <tr><td><code>mart_applovin</code></td><td>applovin</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>lovin 포함 행만 집계</td></tr>
-        <tr><td><code>mart_applovin_direct</code></td><td>RV_Direct</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2024-03~현재</td><td>deal_type=Direct</td></tr>
-        <tr><td><code>mart_z_bonus</code></td><td>z_bonus</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2024~현재</td><td>RV Bonus → deal_type <strong>Programmatic</strong>으로 변경(2026-07-14, KPI RV 타겟 매칭 목적)</td></tr>
-        <tr><td><code>mart_bidmachine</code></td><td>bidmachine</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2026-01~현재</td><td>source_id 기준 분류(1329=read·1486=gacha)</td></tr>
-        <tr><td><code>mart_dt_exchange</code></td><td>digital turbine</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>15:30 단독잡 운영 (KST 15시 이전 data_not_ready)</td></tr>
+        <tr><td><code>mart_applovin</code></td><td>applovin</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023-01~현재</td><td>lovin 포함 행만 집계</td></tr>
+        <tr><td><code>mart_applovin_direct</code></td><td>RV_Direct</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2024-03~현재</td><td>deal_type=Direct · 2026년 매출 없음</td></tr>
+        <tr><td><code>mart_z_bonus</code></td><td>z_bonus</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2024~현재</td><td>deal_type=Programmatic (KPI RV 타겟 매칭)</td></tr>
+        <tr><td><code>mart_bidmachine</code></td><td>bidmachine</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2026-01~현재</td><td>source_id 분류(1329=read·1486=gacha)</td></tr>
+        <tr><td><code>mart_dt_exchange</code></td><td>digital turbine</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>15:30 단독잡 운영 · 2026-05-09 갭 POC 문의 중</td></tr>
         <tr><td><code>mart_gfp</code></td><td>Ad Provider+'_gfp'</td><td><span class="badge-da">DA</span></td><td>API + manual</td><td>2026-01~현재</td><td>NAVER Direct 제외 · S2S only</td></tr>
-        <tr><td><code>mart_gfp_request</code></td><td>gfp</td><td><span class="badge-da">DA</span></td><td>API</td><td>2026-01~현재</td><td>요청수 전용 · revenue/imp/click 없음 · L2 DA 포함</td></tr>
+        <tr><td><code>mart_gfp_request</code></td><td>gfp</td><td><span class="badge-da">DA</span></td><td>API</td><td>2026-01~현재</td><td>요청수 전용 · revenue/imp/click 없음</td></tr>
         <tr><td><code>mart_google_admob</code></td><td>google admob</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>LM 계정</td></tr>
-        <tr><td><code>mart_google_admob_ebj</code></td><td>google_admob_ebj</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2025~현재</td><td>EBJ 계정 · manual only</td></tr>
+        <tr><td><code>mart_google_admob_ebj</code></td><td>google_admob_ebj</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2025-01~현재</td><td>EBJ 계정 · manual only</td></tr>
         <tr><td><code>mart_inmobi</code></td><td>inmobi</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2024-06~현재</td><td></td></tr>
-        <tr><td><code>mart_line_rv</code></td><td>line</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>slot_name split</td></tr>
-        <tr><td><code>mart_line_da</code></td><td>line</td><td><span class="badge-da">DA</span></td><td>API + manual</td><td>2023~현재</td><td>/0.7 gross 환산 · 2026+2025 레거시</td></tr>
-        <tr><td><code>mart_liftoff</code></td><td>liftoff</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td></td></tr>
+        <tr><td><code>mart_line_rv</code></td><td>line</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2025-01~현재</td><td>slot_name split</td></tr>
+        <tr><td><code>mart_line_da</code></td><td>line</td><td><span class="badge-da">DA</span></td><td>API + manual</td><td>2025-01~현재</td><td>/0.7 gross 환산</td></tr>
+        <tr><td><code>mart_liftoff</code></td><td>liftoff</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>revenue 4개년 완전일치</td></tr>
         <tr><td><code>mart_maio</code></td><td>maio</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023-04~현재</td><td></td></tr>
         <tr><td><code>mart_moloco</code></td><td>moloco</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2026-03~현재</td><td>Gacha10/55 티어</td></tr>
         <tr><td><code>mart_pangle</code></td><td>pangle</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023-02~현재</td><td>UTC+8 보정</td></tr>
         <tr><td><code>mart_unity</code></td><td>unity</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>OS null 제외</td></tr>
-        <tr><td><code>mart_ironsource</code></td><td>ironsource</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>구+신 union · 2026-05 일시중단 후 06월 재개(정상)</td></tr>
+        <tr><td><code>mart_ironsource</code></td><td>ironsource</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>구+신 union · 2026-05 매출 0 = 실제 일시중단(정상)</td></tr>
         <tr><td><code>mart_mintegral</code></td><td>mintegral</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023-03~현재</td><td>2026-04~ 매출 0 = 온보딩 대기(정상)</td></tr>
         <tr><td><code>mart_nend</code></td><td>nend</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2023-06~2024-02 (종료)</td><td>API 연동 끊김 · 과거 데이터만</td></tr>
-        <tr><td><code>mart_skyflag</code></td><td>skyflag</td><td><span class="badge-ow">OW</span></td><td>DL + manual</td><td>2023-06~현재</td><td>구+신+DL 3소스 union · 미정산금 Adjustment 처리</td></tr>
+        <tr><td><code>mart_skyflag</code></td><td>skyflag</td><td><span class="badge-ow">OW</span></td><td>DL + manual</td><td>2023-06~현재</td><td>구+신+DL 3소스 union</td></tr>
         <tr><td><code>mart_meta</code></td><td>meta</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2023-06~현재</td><td>manual only · API 전환 예정</td></tr>
         <tr><td><code>mart_adfurikun</code></td><td>adfurikun</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2022-01~2025-05 (종료)</td><td></td></tr>
         <tr><td><code>mart_lap</code></td><td>lap</td><td><span class="badge-da">DA</span></td><td>manual</td><td>2018-01~2025-10 (종료)</td><td>OS 전부 ETC</td></tr>
-        <tr><td><code>mart_appdriver</code></td><td>AppDriver</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2018-01~2023-12 (종료)</td><td></td></tr>
-        <tr><td><code>mart_offerwall_waj</code></td><td>offerwall_waj</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2026-06~현재</td><td></td></tr>
-        <tr><td><code>mart_fluct_ebj</code></td><td>fluct_ebj</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2025~현재</td><td>EBJ 계정 · manual only</td></tr>
-        <tr><td><code>mart_skyflag_ebj</code></td><td>skyflag_ebj</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2025~현재</td><td>EBJ 계정 · manual only</td></tr>
-        <tr><td><code>mart_direct_sales</code></td><td>rv_direct/da_direct</td><td><span class="badge-da">DA</span><span class="badge-rv">RV</span><span class="badge-ow">OW</span></td><td>Google Sheets</td><td>2022~현재</td><td>Direct 실적 · LM 전용(2026-07-14 확인, EBJ는 Direct 시트 없음)</td></tr>
+        <tr><td><code>mart_appdriver</code></td><td>AppDriver</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2018-01~2023-12 (종료)</td><td>구 오퍼월</td></tr>
+        <tr><td><code>mart_offerwall_waj</code></td><td>offerwall_waj</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2026-06~현재</td><td>신규 OW</td></tr>
+        <tr><td><code>mart_fluct_ebj</code></td><td>fluct_ebj</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2025-01~현재</td><td>EBJ 계정 · manual only</td></tr>
+        <tr><td><code>mart_skyflag_ebj</code></td><td>skyflag_ebj</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2025-01~현재</td><td>EBJ 계정 · manual only</td></tr>
+        <tr><td><code>mart_direct_sales</code></td><td>rv_direct/da_direct</td><td><span class="badge-da">DA</span><span class="badge-ow">OW</span></td><td>Google Sheets</td><td>2025-01~현재</td><td>LM 전용 · DA는 L2 합산 · OW는 L3-KPI에서 별도 역산</td></tr>
       </tbody>
     </table>
 
     <!-- ② 기준·참조 마트 -->
-    <div class="section-banner" style="background:#f9f9f9;border-color:#aaa;color:#555">② 기준·참조 마트 (매출 마트 아님)</div>
+    <div class="section-banner-gray">② 기준·참조 마트 (매출 마트 아님)</div>
     <table class="mart-table" style="margin-bottom:10px">
-      <thead>
-        <tr><th>테이블명</th><th>유형</th><th>용도</th><th>비고</th></tr>
-      </thead>
+      <colgroup><col style="width:35%"><col style="width:12%"><col style="width:30%"><col style="width:23%"></colgroup>
+      <thead><tr><th>테이블명</th><th>유형</th><th>용도</th><th>비고</th></tr></thead>
       <tbody>
         <tr><td><code>dim_exchange_rate</code> / <code>mart_exchange_rate</code></td><td><span class="badge-ref">환율</span></td><td>USD→JPY 일별 환율</td><td>PowerBI 동일 기준</td></tr>
-        <tr><td><code>mart_lm_kpi</code> <span style="color:#999">(구 mart_jp_kpi)</span></td><td><span class="badge-ref">KPI</span></td><td>LM Revenue KPI 목표치</td><td>2026-01~12 · 라벨 6종(DA/DA - DS/Offerwall/OW - DS/RV/TOTAL) · <code>mart_l3_jp_kpi</code> 조인 완료(2026-07-14)</td></tr>
-        <tr><td><code>mart_ebj_kpi</code> <span style="color:#00A84B;font-weight:500">(신규)</span></td><td><span class="badge-ref">KPI</span></td><td>EBJ Revenue KPI 목표치</td><td>2026-01~12 · 라벨 2종만 존재(Offerwall, RV — EBJ엔 DA 없음) · 2026-07-14 신규</td></tr>
-        <tr><td><code>mart_dau_lm</code></td><td><span class="badge-ref">DAU</span></td><td>LM 일별 활성유저</td><td>2023-01~현재 · 표준 날짜컬럼 7종 적용</td></tr>
-        <tr><td><code>mart_dau_ebj</code> / <code>mart_dau_ebj_tbl</code></td><td><span class="badge-ref">DAU</span></td><td>EBJ 일별 활성유저</td><td>Google Sheets 연동 · View + 물리테이블 병존</td></tr>
+        <tr><td><code>mart_lm_kpi</code> (구 mart_jp_kpi)</td><td><span class="badge-ref">KPI</span></td><td>LM Revenue KPI 목표치</td><td>라벨 6종 · DA-DS/OW-DS는 Total 제외</td></tr>
+        <tr><td><code>mart_ebj_kpi</code></td><td><span class="badge-ref">KPI</span></td><td>EBJ Revenue KPI 목표치</td><td>라벨 2종 (Offerwall · RV)</td></tr>
+        <tr><td><code>mart_dau_lm</code></td><td><span class="badge-ref">DAU</span></td><td>LM 일별 활성유저</td><td>2023-01~현재 · 표준 날짜컬럼 7종</td></tr>
+        <tr><td><code>mart_dau_ebj</code> / <code>mart_dau_ebj_tbl</code></td><td><span class="badge-ref">DAU</span></td><td>EBJ 일별 활성유저</td><td>Google Sheets 연동 · View+물리테이블</td></tr>
         <tr><td><code>dim_ad_unit_ack</code></td><td><span class="badge-dim">분류규칙</span></td><td>ad_unit_raw 값 확인·승인 목록</td><td>미매핑 ad_unit 검수용</td></tr>
-        <tr><td><code>dim_network_ad_type_rules</code></td><td><span class="badge-dim">분류규칙</span></td><td>DA/RV/OW · Direct/Programmatic 분류 규칙 정의</td><td>네트워크별 ad_type 구분값 확인 가능</td></tr>
-        <tr><td><code>v_classification_drift_check</code></td><td><span class="badge-dim">모니터링</span></td><td>규칙에 안 걸리는 신규값 감지</td><td>5개 네트워크 컬럼 기준</td></tr>
+        <tr><td><code>dim_network_ad_type_rules</code></td><td><span class="badge-dim">분류규칙</span></td><td>DA/RV/OW 분류 규칙 정의</td><td>네트워크별 ad_type 구분값 확인</td></tr>
+        <tr><td><code>v_classification_drift_check</code></td><td><span class="badge-dim">모니터링</span></td><td>신규값 감지</td><td></td></tr>
         <tr><td><code>ad_date_parts</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>표준 날짜 파생컬럼 7종 생성</td><td>ad_date·ad_year·ad_quarter·ad_month·ad_day·ad_weeknum·dt</td></tr>
       </tbody>
     </table>
 
     <!-- ③ BI 연동 물리테이블 -->
-    <div class="section-banner-purple">③ BI 연동용 물리테이블 (_tbl) — Google Sheets 연동 · 규호님 BI 연결용</div>
+    <div class="section-banner-purple">③ BI 연동용 물리테이블 (_tbl) — Google Sheets 원본 · 자체구축 BI 및 WDL 연동 예정</div>
     <table class="mart-table" style="margin-bottom:10px">
-      <thead>
-        <tr><th>테이블명</th><th>원본 View</th><th>소스</th><th>특이사항</th></tr>
-      </thead>
+      <colgroup><col style="width:32%"><col style="width:28%"><col style="width:20%"><col style="width:20%"></colgroup>
+      <thead><tr><th>테이블명</th><th>원본 View</th><th>소스</th><th>특이사항</th></tr></thead>
       <tbody>
-        <tr><td><code>mart_direct_sales_tbl</code></td><td>mart_direct_sales</td><td>Google Sheets (시트1)</td><td>BI 연동용 물리테이블 · LM 전용</td></tr>
+        <tr><td><code>mart_direct_sales_tbl</code></td><td>mart_direct_sales</td><td>Google Sheets (시트1)</td><td>LM 전용 확인</td></tr>
         <tr><td><code>mart_offerwall_maf_tbl</code></td><td>mart_offerwall_maf</td><td>Google Sheets (Raw탭)</td><td></td></tr>
-        <tr><td><code>mart_offerwall_kurashiru_tbl</code></td><td>mart_offerwall_kurashiru</td><td>Google Sheets (2탭)</td><td>確定 전 生 기준 집계 중</td></tr>
-        <tr><td><code>mart_dau_ebj_tbl</code></td><td>mart_dau_ebj</td><td>Google Sheets</td><td>EBJ DAU · app dub 컬럼을 dau로 사용</td></tr>
+        <tr><td><code>mart_offerwall_kurashiru_tbl</code></td><td>mart_offerwall_kurashiru</td><td>Google Sheets (2탭)</td><td>確定 전 生 기준 · 정책 결정 필요</td></tr>
+        <tr><td><code>mart_dau_ebj_tbl</code></td><td>mart_dau_ebj</td><td>Google Sheets</td><td>EBJ DAU</td></tr>
       </tbody>
     </table>
 
     <!-- ④ L2 / L3 통합 마트 -->
-    <div class="section-banner-amber">④ L2 / L3 통합 마트 — View (임시) · BQ 스케줄링 권한 확보 후 물리테이블 전환 예정</div>
+    <div class="section-banner-amber">④ L2 / L3 통합 마트 — View &amp; 물리테이블 · 매일 12:10 자동 적재</div>
     <table class="mart-table">
-      <thead>
-        <tr><th>테이블명</th><th>구분</th><th>소스 네트워크</th><th>검증</th><th>비고</th></tr>
-      </thead>
+      <colgroup><col style="width:28%"><col style="width:10%"><col style="width:40%"><col style="width:22%"></colgroup>
+      <thead><tr><th>테이블명</th><th>구분</th><th>소스</th><th>비고</th></tr></thead>
       <tbody>
         <tr>
-          <td><code>mart_l2_da_jp</code></td>
+          <td><code>mart_l2_da_jp</code> / <code>mart_l2_da_jp_tbl</code></td>
           <td><span class="badge-l2">L2 DA</span></td>
-          <td>line_da · lap · gfp · direct_sales(DA) · gfp_request(요청수)</td>
-          <td style="color:#166534">✅ 완료</td>
-          <td>gfp_request는 요청수만 · 매출 기여 0</td>
+          <td>line_da · lap · gfp · direct_sales(DA) · gfp_request</td>
+          <td>gfp_request 매출 기여 0</td>
         </tr>
         <tr>
-          <td><code>mart_l2_rv_jp</code></td>
+          <td><code>mart_l2_rv_jp</code> / <code>mart_l2_rv_jp_tbl</code></td>
           <td><span class="badge-l2">L2 RV</span></td>
           <td>amoad · applovin · applovin_direct · z_bonus · bidmachine · dt_exchange · google_admob · google_admob_ebj · inmobi · line_rv · liftoff · maio · moloco · pangle · unity · ironsource · mintegral · nend · meta · adfurikun · fluct_ebj (21개)</td>
-          <td style="color:#166534">✅ 완료</td>
-          <td>L2 구축 중 pangle·unity·ironsource 3건 이슈 발견·수정 · z_bonus deal_type 변경 자동 반영(L1에서 수정, L2 재수정 불필요)</td>
+          <td></td>
         </tr>
         <tr>
-          <td><code>mart_l2_ow_jp</code></td>
+          <td><code>mart_l2_ow_jp</code> / <code>mart_l2_ow_jp_tbl</code></td>
           <td><span class="badge-l2">L2 OW</span></td>
-          <td>skyflag · appdriver · offerwall_waj · offerwall_maf · offerwall_kurashiru · skyflag_ebj (direct_sales OW는 의도적 제외)</td>
-          <td style="color:#166534">✅ 완료</td>
-          <td>direct_sales OW = 네트워크 매출에 이미 포함 → L2에서 제외 유지, Direct/Programmatic 분리 계산은 <code>mart_l3_jp_kpi</code>에서 수행(2026-07-14)</td>
+          <td>skyflag · appdriver · offerwall_waj · offerwall_maf · offerwall_kurashiru · skyflag_ebj</td>
+          <td>direct_sales OW는 제외 (L3-KPI에서 역산)</td>
         </tr>
         <tr>
           <td><code>mart_l3_jp</code></td>
-          <td><span class="badge-l3">L3 통합</span></td>
+          <td><span class="badge-l3">L3</span></td>
           <td>L2 DA + RV + OW</td>
-          <td style="color:#166534">✅ 완료</td>
-          <td>2025년 12개월 전체 PBI Total Revenue 완전일치 · network/os 제거 · ad_type+deal_type 레벨 집계 · <span style="color:#991B1B">2026-05 PBI 대비 ¥137,984 갭 발견, 원인 조사 예정(2026-07-15)</span></td>
+          <td>전체 히스토리 · KPI 없음 · 2025 전체+2026-01~04 PBI 완전일치</td>
         </tr>
         <tr>
-          <td><code>mart_l3_jp_kpi</code> <span style="color:#00A84B;font-weight:500">(신규)</span></td>
-          <td><span class="badge-l3">L3+KPI</span></td>
-          <td>mart_l2_da_jp · mart_l2_rv_jp · mart_l2_ow_jp + mart_direct_sales(OW) + mart_lm_kpi · mart_ebj_kpi</td>
-          <td style="color:#166534">✅ 완료</td>
-          <td>account(LM/EBJ) 분리 · OW를 Direct/Programmatic으로 역산 분리(direct_sales 차감) · kpi/achievement_rate 컬럼 추가 · 2026년 스코프 전용 · OW split 정합성 검증 완료(오차 0), account별 kpi_null 0, 2026-01~04 PBI Total Revenue 완전일치(2026-07-14)</td>
+          <td><code>mart_l3_jp_kpi_total</code> / <code>mart_l3_jp_kpi_total_tbl</code></td>
+          <td><span class="badge-l3">L3-KPI</span></td>
+          <td>L2 DA+RV+OW + mart_direct_sales(OW) + mart_lm_kpi + mart_ebj_kpi</td>
+          <td>LM/EBJ 매출·달성율 · 2026-01~04 PBI 완전일치 · <strong>최종 핸드오프 대상</strong></td>
         </tr>
       </tbody>
     </table>
+    <div style="font-size:10px;color:#999;margin-top:6px">전사 DB 핸드오프: View 테이블 총 42개 (L1 32 + 기준참조 6 + L2 3 + L3-KPI 1) · <a href="https://docs.google.com/spreadsheets/d/1DihhWqK1dZz_ySr3DvuXH71U90PCDDyq0qm9V99EYSU/edit" target="_blank" style="color:#185FA5">핸드오프 시트 →</a></div>
   </div>
 
-  <!-- 이번 주 진행 중 / 다음 단계 -->
-  <div class="two-col">
+  <!-- 이번 주 진행 중 / 컨펌 -->
+  <div style="margin-bottom:0.9rem">
     <div class="card">
-      <div class="card-title"><span class="dot dot-amber"></span>이번 주 진행 중 (W14~15)</div>
+      <div class="card-title"><span class="dot dot-amber"></span>이번 주 진행 중 (W15~16)</div>
       <div class="item">
         <div class="item-check pending"></div>
         <div class="item-wrap">
@@ -303,58 +292,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="item">
         <div class="item-check pending"></div>
         <div class="item-wrap">
-          <span><span class="tag-phase tag-p2">P2</span>BQ 스케줄링 설정</span>
-          <div class="item-sub">L2/L3 물리테이블 전환 · _tbl 갱신 체계 구축</div>
+          <span><span class="tag-phase tag-p4">P4</span>BQ 조회 비용 최적화 검토</span>
+          <div class="item-sub">BI·WDL 연동 시 조회 비용 추산 · 전체 기간 vs 2~3개월 제한 비교 · 비용 청구 계정 변경 요청 (→ 김현미 계정)</div>
         </div>
-        <span class="tag tag-confirm">권한 대기</span>
-      </div>
-      <div class="item">
-        <div class="item-check pending"></div>
-        <div class="item-wrap">
-          <span><span class="tag-phase tag-p1">P1</span>Meta Audience Network API 계정 확인</span>
-          <div class="item-sub">API 계정 미확보 · 안 되면 manual로 유지</div>
-        </div>
-        <span class="tag tag-inprogress">확인 중</span>
-      </div>
-      <div class="item">
-        <div class="item-check pending"></div>
-        <div class="item-wrap">
-          <span><span class="tag-phase tag-p3">P3</span><code>mart_l3_jp</code> vs PBI 2026-05 매출 갭(¥137,984) 원인 조사</span>
-          <div class="item-sub">day-level 대조 시 mart_l3_jp_kpi(신규)와 mart_l3_jp(기존)는 완전 일치 확인 · PBI 대비 갭 원인은 별도 조사 필요</div>
-        </div>
-        <span class="tag tag-inprogress">내일 예정</span>
+        <span class="tag tag-inprogress">검토 중</span>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-title"><span class="dot dot-blue"></span>컨펌 요청 사항</div>
-      <div class="confirm-group-title">① DA/RV 지면 구분 확정</div>
-      <div class="confirm-row">
-        <div class="confirm-num">1</div>
-        <div class="confirm-text">DA · RV ad_unit 분류명 확정
-          <div class="confirm-sub">raw_ad_unit 보존으로 소급 적용 가능 · 확정 후 분류 함수 반영</div>
-        </div>
-        <span class="confirm-status tag tag-confirm">검토 요청</span>
-      </div>
-      <div class="confirm-group-title">② offerwall_kurashiru 집계 기준</div>
-      <div class="confirm-row">
-        <div class="confirm-num">2</div>
-        <div class="confirm-text">確定 전 生 기준 유지 여부
-          <div class="confirm-sub">현재 마트 ¥6,017,464 (生기준) · PBI ¥0 (確定기준) · L3 집계 시 정책 결정 필요</div>
-        </div>
-        <span class="confirm-status tag tag-confirm">결정 필요</span>
-      </div>
-      <div class="confirm-group-title">③ KPI 달성율(Total) 계산식</div>
-      <div class="confirm-row">
-        <div class="confirm-num">3</div>
-        <div class="confirm-text">Total(LM+EBJ) Monthly/Yearly KPI%가 DA+OW+RV 개별 목표 합산 대비인지, 별도 TOTAL 목표 대비인지
-          <div class="confirm-sub">KPI 원본의 TOTAL 라벨이 개별 라벨 합계와 일치하지 않음(2026-01-01 기준 ¥612,904 차이 확인) — 확인 필요</div>
-        </div>
-        <span class="confirm-status tag tag-confirm">확인 필요</span>
-      </div>
     </div>
   </div>
-</div>
+
+  <!-- 잔여 이슈 -->
+  <div class="full-card">
+    <div class="card-title" style="margin-bottom:7px">확인 완료 사항</div>
+    <div class="info-card">
+      ✅ <strong>dt_exchange 갭</strong> — 대시보드 &lt;&gt; API 간 차이 확인 완료 · API 데이터가 정확한 것으로 확인
+    </div>
+    <div class="info-card">
+      ✅ <strong>offerwall_kurashiru</strong> — PBI도 마트와 동일 기준(生기준)으로 맞추기로 확정
+    </div>
+  </div>
+
 </div>
 </body>
 </html>
