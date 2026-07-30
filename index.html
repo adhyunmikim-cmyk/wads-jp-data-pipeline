@@ -3,12 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>삽입 블록 미리보기 — 실제 페이지 CSS 적용</title>
+<title>[JP] 데이터 자동화 프로젝트 — Weekly 보고</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#ffffff;color:#111;padding:1rem 1.5rem;max-width:960px;margin:0 auto;font-size:12px}
 .wrap{padding:0.8rem 0}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;padding-bottom:0.7rem;border-bottom:1px solid #e5e5e5}
+.header-left h1{font-size:15px;font-weight:500;color:#111}
+.header-left p{font-size:11px;color:#666;margin-top:3px}
+.header-right{text-align:right;font-size:11px;color:#666}
+.header-right strong{display:block;font-size:13px;font-weight:500;color:#111}
 .section-title{font-size:11px;font-weight:500;color:#666;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:7px}
+.phase-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:1rem}
+.phase-card{border-radius:6px;border:0.5px solid #e5e5e5;padding:7px 9px;background:#fff}
+.phase-card.done{background:#f0fdf4;border-color:#bbf7d0}
+.phase-card.active{border:2px solid #00A84B;background:#f0fdf7}
+.phase-card.upcoming{background:#f9f9f9}
+.phase-label{font-size:10px;font-weight:500;margin-bottom:2px}
+.phase-card.done .phase-label{color:#166534}
+.phase-card.active .phase-label{color:#00A84B}
+.phase-card.upcoming .phase-label{color:#aaa}
+.phase-name{font-size:11px;font-weight:500;color:#111}
+.phase-week{font-size:10px;color:#888;margin-top:1px}
+.phase-badge{display:inline-block;font-size:9px;padding:1px 6px;border-radius:20px;margin-top:4px;font-weight:500}
+.badge-done{background:#dcfce7;color:#166534}
+.badge-active{background:#e8fdf2;color:#00A84B}
+.badge-upcoming{background:#f3f4f6;color:#aaa}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0.9rem}
 .card{background:#fff;border:0.5px solid #e5e5e5;border-radius:8px;padding:0.7rem 0.9rem}
 .card-title{font-size:11px;font-weight:500;color:#111;margin-bottom:7px;display:flex;align-items:center;gap:5px}
@@ -19,6 +39,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .dot-red{background:#DC2626}
 .item{font-size:11.5px;color:#555;padding:4px 0;border-bottom:0.5px solid #f0f0f0;display:flex;align-items:flex-start;gap:6px;line-height:1.45}
 .item:last-child{border-bottom:none}
+.item-check{width:12px;height:12px;border-radius:3px;border:1.5px solid #00A84B;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.item-check.done{background:#00A84B;border-color:#00A84B}
+.item-check.done::after{content:'';width:3px;height:6px;border:1.5px solid white;border-top:none;border-left:none;transform:rotate(45deg);margin-top:-1px}
+.item-check.pending{border-color:#ccc;background:transparent}
 .item-wrap{flex:1;min-width:0}
 .item-sub{font-size:10px;color:#999;margin-top:2px;line-height:1.4}
 .tag{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:500;margin-left:auto;flex-shrink:0}
@@ -26,6 +50,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tag-inprogress{background:#faeeda;color:#BA7517}
 .tag-waiting{background:#fef2f2;color:#DC2626}
 .tag-confirm{background:#e6f1fb;color:#185FA5}
+.tag-phase{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:500;margin-right:2px;flex-shrink:0;white-space:nowrap}
+.tag-p1{background:#e8fdf2;color:#166534}
+.tag-p2{background:#faeeda;color:#854d0e}
+.tag-p3{background:#e6f1fb;color:#0c447c}
+.tag-p4{background:#f3e8ff;color:#6D28D9}
+/* 마트 테이블 목록 */
 .mart-table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
 .mart-table th{background:#f9f9f9;color:#666;font-weight:500;padding:5px 8px;border-bottom:1px solid #e5e5e5;text-align:left;white-space:nowrap}
 .mart-table td{padding:4px 8px;border-bottom:0.5px solid #f0f0f0;color:#555;vertical-align:top;line-height:1.5;word-break:break-word}
@@ -33,9 +63,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .mart-table code{font-family:'SF Mono',Consolas,monospace;font-size:10.5px;background:#f3f4f6;padding:1px 5px;border-radius:3px;color:#111}
 .badge-rv{background:#e8fdf2;color:#166534;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
 .badge-da{background:#e6f1fb;color:#185FA5;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
+.badge-ow{background:#f3e8ff;color:#6D28D9;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
+.badge-ref{background:#f3f4f6;color:#555;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
+.badge-l2{background:#faeeda;color:#854d0e;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
+.badge-l3{background:#fef2f2;color:#991B1B;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
+.badge-tbl{background:#fdf4ff;color:#7C3AED;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
+.badge-dim{background:#f0fdf4;color:#166534;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:500;white-space:nowrap}
+.section-banner{background:#f0fdf7;border-left:3px solid #00A84B;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#166534;border-radius:0 4px 4px 0}
 .section-banner-gray{background:#f9f9f9;border-left:3px solid #aaa;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#555;border-radius:0 4px 4px 0}
+.section-banner-purple{background:#fdf4ff;border-left:3px solid #7C3AED;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#6D28D9;border-radius:0 4px 4px 0}
 .section-banner-amber{background:#fffbeb;border-left:3px solid #BA7517;padding:6px 10px;margin-bottom:6px;font-size:11px;font-weight:500;color:#854d0e;border-radius:0 4px 4px 0}
 .full-card{background:#fff;border:0.5px solid #e5e5e5;border-radius:8px;padding:0.7rem 0.9rem;margin-bottom:0.9rem}
+.milestone{background:#f0fdf7;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:0.9rem;font-size:12px;color:#166534}
+.milestone strong{font-size:13px}
+.confirm-group-title{font-size:10.5px;font-weight:600;color:#666;margin:7px 0 3px 0;padding-bottom:3px;border-bottom:0.5px solid #f0f0f0}
 .confirm-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid #f0f0f0;font-size:11.5px}
 .confirm-row:last-child{border-bottom:none}
 .confirm-num{width:18px;height:18px;border-radius:50%;background:#185FA5;color:white;font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
@@ -45,14 +86,229 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .info-card{background:#f0f4ff;border:0.5px solid #a5b4fc;border-radius:6px;padding:8px 10px;font-size:11.5px;line-height:1.55;margin-bottom:6px;color:#3730a3}
 .warn-card{background:#fef2f2;border:0.5px solid #fecaca;border-radius:6px;padding:8px 10px;font-size:11.5px;line-height:1.55;margin-bottom:6px;color:#991B1B}
 .warn-card:last-child,.info-card:last-child{margin-bottom:0}
+@media print{
+  body{padding:0.5rem 1rem;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .full-card,.card,.phase-card,.two-col{break-inside:avoid}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="section-title">미리보기 — 아래 두 블록이 실제 페이지에 들어갔을 때의 모습</div>
+  <div class="header">
+    <div class="header-left">
+      <h1>[JP] 데이터 자동화 프로젝트 — Weekly 보고</h1>
+      <p>GCS &amp; BigQuery 수집·적재 자동화 · 담당: A · 검토: 규호님, 슬기님, 지윤님</p>
+    </div>
+    <div class="header-right">
+      <strong>W16~17 / 20주</strong>
+      <span>2026.07.28</span>
+    </div>
+  </div>
 
-  <!-- ═══════════ [A] two-col 바로 앞에 삽입 ═══════════ -->
+  <div class="section-title">전체 진행 현황</div>
+  <div class="phase-row">
+    <div class="phase-card done">
+      <div class="phase-label">Phase 0</div>
+      <div class="phase-name">환경 준비</div>
+      <div class="phase-week">W1~2</div>
+      <span class="phase-badge badge-done">완료</span>
+    </div>
+    <div class="phase-card done">
+      <div class="phase-label">Phase 1</div>
+      <div class="phase-name">수집 파이프라인</div>
+      <div class="phase-week">W3~7</div>
+      <span class="phase-badge badge-done">완료</span>
+    </div>
+    <div class="phase-card done">
+      <div class="phase-label">Phase 2</div>
+      <div class="phase-name">BQ 적재 자동화</div>
+      <div class="phase-week">W8~12</div>
+      <span class="phase-badge badge-done">완료</span>
+    </div>
+    <div class="phase-card done">
+      <div class="phase-label">Phase 3</div>
+      <div class="phase-name">대시보드 검토</div>
+      <div class="phase-week">W13~16</div>
+      <span class="phase-badge badge-done">완료</span>
+    </div>
+    <div class="phase-card active">
+      <div class="phase-label">Phase 4</div>
+      <div class="phase-name">안정화·공유</div>
+      <div class="phase-week">W17~20</div>
+      <span class="phase-badge badge-active">진행 중</span>
+    </div>
+  </div>
+
+  <!-- 마일스톤 -->
+  <div class="milestone">
+    🎉 <strong>JP Ads 대시보드 Webtoon GitHub 이관 및 배포 완료</strong><br>
+    <span style="font-size:11px">규호님 배포 버전 동일 구성으로 이관 · dev/prod 분리 운영 준비 중 · 배포 URL: <a href="https://dev-jp-ads-dashboard.io.naver.com/" target="_blank" style="color:#166534">dev-jp-ads-dashboard.io.naver.com</a></span>
+  </div>
+
+  <!-- BQ 마트 테이블 목록 -->
+  <div class="full-card" style="display:none">
+    <div class="card-title"><span class="dot dot-green"></span>BQ 마트 테이블 목록 — <code style="font-size:10px;background:#f3f4f6;padding:1px 5px;border-radius:3px">wads-data-platform.w_ads_data</code></div>
+
+    <!-- ① 네트워크 실적 L1 -->
+    <div class="section-banner">① 네트워크 실적 마트 (L1) — View · GCS 신규 파일 자동 반영</div>
+    <table class="mart-table" style="margin-bottom:10px">
+      <colgroup><col style="width:23%"><col style="width:18%"><col style="width:7%"><col style="width:17%"><col style="width:17%"><col style="width:18%"></colgroup>
+      <thead><tr><th>테이블명</th><th>network</th><th>ad_type</th><th>수집방식</th><th>데이터기간</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td><code>mart_amoad</code></td><td>amoad</td><td><span class="badge-rv">RV</span></td><td>DL (대시보드 자동화)</td><td>2025~현재</td><td>API 미지원</td></tr>
+        <tr><td><code>mart_applovin</code></td><td>applovin</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023-01~현재</td><td>lovin 포함 행만 집계</td></tr>
+        <tr><td><code>mart_applovin_direct</code></td><td>RV_Direct</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2024-03~현재</td><td>deal_type=Direct · 2026년 매출 없음</td></tr>
+        <tr><td><code>mart_z_bonus</code></td><td>z_bonus</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2024~현재</td><td>deal_type=Programmatic (KPI RV 타겟 매칭)</td></tr>
+        <tr><td><code>mart_bidmachine</code></td><td>bidmachine</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2026-01~현재</td><td>source_id 분류(1329=read·1486=gacha)</td></tr>
+        <tr><td><code>mart_dt_exchange</code></td><td>digital turbine</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>15:30 단독잡 운영 · 2026-05-09 갭 POC 문의 중</td></tr>
+        <tr><td><code>mart_gfp</code></td><td>Ad Provider+'_gfp'</td><td><span class="badge-da">DA</span></td><td>API + manual</td><td>2026-01~현재</td><td>NAVER Direct 제외 · S2S only</td></tr>
+        <tr><td><code>mart_gfp_request</code></td><td>gfp</td><td><span class="badge-da">DA</span></td><td>API</td><td>2026-01~현재</td><td>요청수 전용 · revenue/imp/click 없음</td></tr>
+        <tr><td><code>mart_google_admob</code></td><td>google admob</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>LM 계정</td></tr>
+        <tr><td><code>mart_google_admob_ebj</code></td><td>google_admob_ebj</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2025-01~현재</td><td>EBJ 계정 · manual only</td></tr>
+        <tr><td><code>mart_inmobi</code></td><td>inmobi</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2024-06~현재</td><td></td></tr>
+        <tr><td><code>mart_line_rv</code></td><td>line</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2025-01~현재</td><td>slot_name split</td></tr>
+        <tr><td><code>mart_line_da</code></td><td>line</td><td><span class="badge-da">DA</span></td><td>API + manual</td><td>2025-01~현재</td><td>/0.7 gross 환산</td></tr>
+        <tr><td><code>mart_liftoff</code></td><td>liftoff</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>revenue 4개년 완전일치</td></tr>
+        <tr><td><code>mart_maio</code></td><td>maio</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023-04~현재</td><td></td></tr>
+        <tr><td><code>mart_moloco</code></td><td>moloco</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2026-03~현재</td><td>Gacha10/55 티어</td></tr>
+        <tr><td><code>mart_pangle</code></td><td>pangle</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023-02~현재</td><td>UTC+8 보정</td></tr>
+        <tr><td><code>mart_unity</code></td><td>unity</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>OS null 제외</td></tr>
+        <tr><td><code>mart_ironsource</code></td><td>ironsource</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023~현재</td><td>구+신 union · 2026-05 매출 0 = 실제 일시중단(정상)</td></tr>
+        <tr><td><code>mart_mintegral</code></td><td>mintegral</td><td><span class="badge-rv">RV</span></td><td>API + manual</td><td>2023-03~현재</td><td>2026-04~ 매출 0 = 온보딩 대기(정상)</td></tr>
+        <tr><td><code>mart_nend</code></td><td>nend</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2023-06~2024-02 (종료)</td><td>API 연동 끊김 · 과거 데이터만</td></tr>
+        <tr><td><code>mart_skyflag</code></td><td>skyflag</td><td><span class="badge-ow">OW</span></td><td>DL + manual</td><td>2023-06~현재</td><td>구+신+DL 3소스 union</td></tr>
+        <tr><td><code>mart_meta</code></td><td>meta</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2023-06~현재</td><td>manual only · API 전환 예정</td></tr>
+        <tr><td><code>mart_adfurikun</code></td><td>adfurikun</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2022-01~2025-05 (종료)</td><td></td></tr>
+        <tr><td><code>mart_lap</code></td><td>lap</td><td><span class="badge-da">DA</span></td><td>manual</td><td>2018-01~2025-10 (종료)</td><td>OS 전부 ETC</td></tr>
+        <tr><td><code>mart_appdriver</code></td><td>AppDriver</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2018-01~2023-12 (종료)</td><td>구 오퍼월</td></tr>
+        <tr><td><code>mart_offerwall_waj</code></td><td>offerwall_waj</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2026-06~현재</td><td>신규 OW</td></tr>
+        <tr><td><code>mart_offerwall_maf</code> / <code>_tbl</code></td><td>offerwall_maf</td><td><span class="badge-ow">OW</span></td><td>Google Sheets</td><td>—</td><td>③ 물리테이블 참조</td></tr>
+        <tr><td><code>mart_offerwall_kurashiru</code> / <code>_tbl</code></td><td>offerwall_kurashiru</td><td><span class="badge-ow">OW</span></td><td>Google Sheets</td><td>—</td><td>確定 전 生 기준 · 정책 결정 필요</td></tr>
+        <tr><td><code>mart_fluct_ebj</code></td><td>fluct_ebj</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2025-01~현재</td><td>EBJ 계정 · manual only</td></tr>
+        <tr><td><code>mart_skyflag_ebj</code></td><td>skyflag_ebj</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2025-01~현재</td><td>EBJ 계정 · manual only</td></tr>
+        <tr><td><code>mart_direct_sales</code></td><td>rv_direct/da_direct</td><td><span class="badge-da">DA</span><span class="badge-ow">OW</span></td><td>Google Sheets</td><td>2025-01~현재</td><td>LM 전용 · DA는 L2 합산 · OW는 L3-KPI에서 별도 역산</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ② 기준·참조 마트 -->
+    <div class="section-banner-gray">② 기준·참조 마트 (매출 마트 아님)</div>
+    <table class="mart-table" style="margin-bottom:10px">
+      <colgroup><col style="width:35%"><col style="width:12%"><col style="width:30%"><col style="width:23%"></colgroup>
+      <thead><tr><th>테이블명</th><th>유형</th><th>용도</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td><code>dim_exchange_rate</code> / <code>mart_exchange_rate</code></td><td><span class="badge-ref">환율</span></td><td>USD→JPY 일별 환율</td><td>PowerBI 동일 기준</td></tr>
+        <tr><td><code>mart_lm_kpi</code> (구 mart_jp_kpi)</td><td><span class="badge-ref">KPI</span></td><td>LM Revenue KPI 목표치</td><td>라벨 6종 · DA-DS/OW-DS는 Total 제외</td></tr>
+        <tr><td><code>mart_ebj_kpi</code></td><td><span class="badge-ref">KPI</span></td><td>EBJ Revenue KPI 목표치</td><td>라벨 2종 (Offerwall · RV)</td></tr>
+        <tr><td><code>mart_dau_lm</code></td><td><span class="badge-ref">DAU</span></td><td>LM 일별 활성유저</td><td>2023-01~현재 · 표준 날짜컬럼 7종</td></tr>
+        <tr><td><code>mart_dau_ebj</code> / <code>mart_dau_ebj_tbl</code></td><td><span class="badge-ref">DAU</span></td><td>EBJ 일별 활성유저</td><td>Google Sheets 연동 · View+물리테이블</td></tr>
+        <tr><td><code>dim_ad_unit_ack</code></td><td><span class="badge-dim">분류규칙</span></td><td>ad_unit_raw 값 확인·승인 목록</td><td>미매핑 ad_unit 검수용</td></tr>
+        <tr><td><code>dim_network_ad_type_rules</code></td><td><span class="badge-dim">분류규칙</span></td><td>DA/RV/OW 분류 규칙 정의</td><td>네트워크별 ad_type 구분값 확인</td></tr>
+        <tr><td><code>dim_ad_unit_mapping_audit</code></td><td><span class="badge-dim">모니터링</span></td><td>지면 매핑 감사 (2026-07-29 신설)</td><td>판정 규칙 14종 (error 7 · warn 7) · Schema Map 연동</td></tr>
+        <tr><td><code>v_classification_drift_check</code></td><td><span class="badge-dim">모니터링</span></td><td>신규값 감지</td><td style="color:#DC2626">실체 확인 필요 — 핸드오프 목록 확정 전 정리</td></tr>
+        <tr><td><code>ad_date_parts</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>표준 날짜 파생컬럼 7종 생성</td><td>ad_date·ad_year·ad_quarter·ad_month·ad_day·ad_weeknum·dt</td></tr>
+        <tr><td><code>ad_category</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>카테고리 분류 <code>(ad_type, ad_unit_src)</code></td><td>DA=지면 구분 · RV=방식 구분 · 미해당 시 ETC</td></tr>
+        <tr><td><code>gacha_tier</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>광고 열람 가능 횟수 <code>(network, ad_cat, ad_unit_src)</code></td><td>10 / 55 / NONE · gacha 행에만 값 존재</td></tr>
+        <tr><td><code>ad_detail</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>bidding group <code>(network, ad_unit_src)</code></td><td>네트워크별 표기 상이 · 네트워크 간 직접 비교 불가</td></tr>
+        <tr><td><code>lan_classification</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>LINE Ad Network slot_name RV/DA 분기</td><td></td></tr>
+        <tr><td><code>std_os</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>OS 표준화 <code>(device_type)</code></td><td>iOS · Android · ETC</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ③ BI 연동 물리테이블 -->
+    <div class="section-banner-purple">③ BI 연동용 물리테이블 (_tbl) — Google Sheets 원본 · 자체구축 BI 및 WDL 연동 예정</div>
+    <table class="mart-table" style="margin-bottom:10px">
+      <colgroup><col style="width:32%"><col style="width:28%"><col style="width:20%"><col style="width:20%"></colgroup>
+      <thead><tr><th>테이블명</th><th>원본 View</th><th>소스</th><th>특이사항</th></tr></thead>
+      <tbody>
+        <tr><td><code>mart_direct_sales_tbl</code></td><td>mart_direct_sales</td><td>Google Sheets (시트1)</td><td>LM 전용 확인</td></tr>
+        <tr><td><code>mart_offerwall_maf_tbl</code></td><td>mart_offerwall_maf</td><td>Google Sheets (Raw탭)</td><td></td></tr>
+        <tr><td><code>mart_offerwall_kurashiru_tbl</code></td><td>mart_offerwall_kurashiru</td><td>Google Sheets (2탭)</td><td>確定 전 生 기준 · 정책 결정 필요</td></tr>
+        <tr><td><code>mart_dau_ebj_tbl</code></td><td>mart_dau_ebj</td><td>Google Sheets</td><td>EBJ DAU</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ④ L2 / L3 통합 마트 -->
+    <div class="section-banner-amber">④ L2 / L3 통합 마트 — View &amp; 물리테이블 · 매일 12:10 자동 적재</div>
+    <table class="mart-table">
+      <colgroup><col style="width:28%"><col style="width:10%"><col style="width:40%"><col style="width:22%"></colgroup>
+      <thead><tr><th>테이블명</th><th>구분</th><th>소스</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>mart_l2_da_jp</code> / <code>mart_l2_da_jp_tbl</code></td>
+          <td><span class="badge-l2">L2 DA</span></td>
+          <td>line_da · lap · gfp · direct_sales(DA) · gfp_request</td>
+          <td>gfp_request 매출 기여 0</td>
+        </tr>
+        <tr>
+          <td><code>mart_l2_rv_jp</code> / <code>mart_l2_rv_jp_tbl</code></td>
+          <td><span class="badge-l2">L2 RV</span></td>
+          <td>amoad · applovin · applovin_direct · z_bonus · bidmachine · dt_exchange · google_admob · google_admob_ebj · inmobi · line_rv · liftoff · maio · moloco · pangle · unity · ironsource · mintegral · nend · meta · adfurikun · fluct_ebj (21개)</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><code>mart_l2_ow_jp</code> / <code>mart_l2_ow_jp_tbl</code></td>
+          <td><span class="badge-l2">L2 OW</span></td>
+          <td>skyflag · appdriver · offerwall_waj · offerwall_maf · offerwall_kurashiru · skyflag_ebj</td>
+          <td>direct_sales OW는 제외 (L3-KPI에서 역산)</td>
+        </tr>
+        <tr>
+          <td><code>mart_l3_jp</code></td>
+          <td><span class="badge-l3">L3</span></td>
+          <td>L2 DA + RV + OW</td>
+          <td>전체 히스토리 · KPI 없음 · 2025 전체+2026-01~04 PBI 완전일치</td>
+        </tr>
+        <tr>
+          <td><code>mart_l3_jp_kpi_total</code> / <code>mart_l3_jp_kpi_total_tbl</code></td>
+          <td><span class="badge-l3">L3-KPI</span></td>
+          <td>L2 DA+RV+OW + mart_direct_sales(OW) + mart_lm_kpi + mart_ebj_kpi</td>
+          <td>LM/EBJ 매출·달성율 · 2026-01~04 PBI 완전일치 · <strong>최종 핸드오프 대상</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:#999;margin-top:6px">전사 DB 핸드오프: View 테이블 총 42개 (L1 32 + 기준참조 6 + L2 3 + L3-KPI 1) · <a href="https://docs.google.com/spreadsheets/d/1DihhWqK1dZz_ySr3DvuXH71U90PCDDyq0qm9V99EYSU/edit" target="_blank" style="color:#185FA5">핸드오프 시트 →</a></div>
+  </div>
+
+  <!-- 이번 주 진행 중 / 컨펌 -->
+  <div style="margin-bottom:0.9rem">
+    <div class="card">
+      <div class="card-title"><span class="dot dot-amber"></span>이번 주 진행 중 (W15~16)</div>
+      <div class="item">
+        <div class="item-check pending"></div>
+        <div class="item-wrap">
+          <span><span class="tag-phase tag-p3">P3</span>대시보드 인수 준비 — n3r 검토</span>
+          <div class="item-sub">기존 대시보드 구조 파악 및 BQ 마트 연동 방식 검토</div>
+        </div>
+        <span class="tag tag-inprogress">진행 중</span>
+      </div>
+      <div class="item">
+        <div class="item-check pending"></div>
+        <div class="item-wrap">
+          <span><span class="tag-phase tag-p3">P3</span>전사 트래픽 데이터 적재 검토</span>
+          <div class="item-sub">수령한 트래픽 데이터 구조 파악 · BQ 적재 방식 결정</div>
+        </div>
+        <span class="tag tag-inprogress">진행 중</span>
+      </div>
+      <div class="item">
+        <div class="item-check pending"></div>
+        <div class="item-wrap">
+          <span><span class="tag-phase tag-p3">P3</span>Direct Sales 자동화 적용 방식 검토</span>
+          <div class="item-sub">Skyfall · GFP 리포트 적재 방식 검토 완료 · 자동화 방식 확정 예정</div>
+        </div>
+        <span class="tag tag-inprogress">검토 중</span>
+      </div>
+      <div class="item">
+        <div class="item-check pending"></div>
+        <div class="item-wrap">
+          <span><span class="tag-phase tag-p4">P4</span>BQ 조회 비용 최적화 검토</span>
+          <div class="item-sub">BI·WDL 연동 시 조회 비용 추산 · 전체 기간 vs 2~3개월 제한 비교 · 비용 청구 계정 변경 요청 (찐님 → 김현미 계정)</div>
+        </div>
+        <span class="tag tag-inprogress">검토 중</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 광고 분류 컬럼 정의 재정비 -->
 
   <div class="full-card">
     <div class="card-title"><span class="dot dot-red"></span>광고 분류 컬럼 정의 재정비 — 적용 완료 (2026-07-29)</div>
@@ -179,8 +435,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <!-- ═══════════ [B] 논의 카드 안 맨 위 (실제 위치 재현) ═══════════ -->
-
+  <!-- 잔여 이슈 -->
   <div class="two-col">
     <div class="card">
       <div class="card-title" style="margin-bottom:7px"><span class="dot dot-blue"></span>자체구축 BI 대시보드 현황</div>
@@ -200,6 +455,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="warn-card" style="margin-bottom:6px">
         ⚠️ <strong>분류 컬럼 3종 정의 재정비 — 영향 확인 요청</strong><br>
         <code>ad_category</code>(DA=지면·RV=방식) / <code>gacha_tier</code>(열람 횟수) / <code>ad_detail</code>(bidding group) 정의 변경 적용 완료 · 스키마·매출 불변이나 <strong>값 의미가 바뀌어 참조 로직이 있으면 수치가 달라짐</strong> · 상세는 위 섹션 참고
+      </div>
+      <div class="warn-card" style="margin-bottom:6px">
+        ⚠️ <strong>L2 통합 마트에 분류 컬럼 적재 여부 결정 필요</strong><br>
+        <code>ad_unit_raw</code> · <code>ad_category</code> · <code>gacha_tier</code> · <code>ad_detail</code> 4개 컬럼은 현재 <strong>L1에만 존재</strong>하고 L2(DA·RV·OW)에는 없음 → 자체구축 BI의 지면·티어 필터가 전부 <code>Unknown</code>으로 표시됨 · <strong>RV Units 페이지 및 read/gacha·bidding group 구분 기능의 선행 조건</strong> · 적재 시 집계 그레인이 세분화되어 행 수·조회 비용이 증가하므로 <strong>아래 BQ 조회 비용 추산 결과와 함께 결정</strong>
       </div>
       <div class="warn-card" style="margin-bottom:6px">
         ⚠️ <strong>KPI 집계 규칙 수정</strong><br>
