@@ -146,6 +146,67 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <span style="font-size:11px">규호님 배포 버전 동일 구성으로 이관 · dev/prod 분리 운영 준비 중 · 배포 URL: <a href="https://dev-jp-ads-dashboard.io.naver.com/" target="_blank" style="color:#166534">dev-jp-ads-dashboard.io.naver.com</a></span>
   </div>
 
+  <!-- 광고 분류 컬럼 재정비 -->
+  <div class="full-card" style="margin-bottom:0.9rem">
+    <div class="card-title"><span class="dot dot-green"></span>광고 분류 컬럼 정의 재정비 — 적용 완료 (2026-07-29)</div>
+    <div class="info-card" style="margin-bottom:10px">
+      컬럼 추가·삭제 없이 기존 3개 컬럼의 <strong>정의만 재정의</strong> · 전사DB 적재 스키마 변경 없음 · <strong>총 매출 불변</strong> (전 마트 스냅샷 대비 0원 차이 검증 완료)
+    </div>
+
+    <div style="font-size:11px;font-weight:600;color:#555;margin-bottom:6px;padding:5px 0;border-bottom:1px solid #e5e5e5">① 컬럼별 정의 — ad_type 기준 이중 정의</div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:12px">
+      <thead>
+        <tr>
+          <th style="padding:5px 8px;background:#f9f9f9;border-bottom:1px solid #e5e5e5;font-weight:500;color:#666;width:18%">컬럼</th>
+          <th style="padding:5px 8px;background:#e6f1fb;border-bottom:1px solid #e5e5e5;font-weight:500;color:#185FA5;width:41%">DA 광고</th>
+          <th style="padding:5px 8px;background:#e8fdf2;border-bottom:1px solid #e5e5e5;font-weight:500;color:#166534;width:41%">RV 광고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:6px 8px;border-bottom:0.5px solid #f0f0f0;font-family:monospace;font-size:10.5px;font-weight:500">ad_category</td>
+          <td style="padding:6px 8px;border-bottom:0.5px solid #f0f0f0;color:#555">
+            <strong>지면 구분</strong><br>
+            <span style="color:#888;font-size:10px">viewer_end · splash · episode_list · more · main · pha · ETC</span>
+          </td>
+          <td style="padding:6px 8px;border-bottom:0.5px solid #f0f0f0;color:#555">
+            <strong>광고 방식 구분</strong><br>
+            <span style="color:#888;font-size:10px">gacha · read · TEST · ETC</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:6px 8px;border-bottom:0.5px solid #f0f0f0;font-family:monospace;font-size:10.5px;font-weight:500">gacha_tier</td>
+          <td style="padding:6px 8px;border-bottom:0.5px solid #f0f0f0;color:#aaa;font-style:italic">해당 없음 (NULL)</td>
+          <td style="padding:6px 8px;border-bottom:0.5px solid #f0f0f0;color:#555">
+            <strong>광고 열람 가능 횟수</strong><br>
+            <span style="color:#888;font-size:10px">10 · 55 · NONE</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:6px 8px;font-family:monospace;font-size:10.5px;font-weight:500">ad_detail</td>
+          <td colspan="2" style="padding:6px 8px;color:#555">
+            <strong>bidding group — DA·RV 공통</strong><br>
+            <span style="color:#888;font-size:10px">LAN: T1~T5 / High·Mid·Low / 금액 &nbsp;·&nbsp; ironsource: 숫자구간 &nbsp;·&nbsp; maio: 円금액 &nbsp;·&nbsp; GFP: T0~T2</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="font-size:11px;font-weight:600;color:#555;margin-bottom:6px;padding:5px 0;border-bottom:1px solid #e5e5e5">② 주요 변경점</div>
+    <div style="font-size:11px;color:#555;line-height:1.9;padding-left:2px">
+      <div style="margin-bottom:4px"><strong style="color:#111">10/55는 bidding tier가 아니라 광고 열람 가능 횟수</strong><br>
+      <span style="color:#888;font-size:10px">bidding group은 ad_detail로 일원화. ironsource·maio의 tier 값이 gacha_tier에서 ad_detail로 이동</span></div>
+      <div style="margin-bottom:4px"><strong style="color:#111">bidding group 표기 체계가 네트워크마다 달라 네트워크 간 tier 직접 비교 불가</strong><br>
+      <span style="color:#888;font-size:10px">필터·집계 시 네트워크별 스코프 필요 (LAN은 T1~T5, GFP는 T0~T2로 구간 수 자체가 다름)</span></div>
+      <div style="margin-bottom:4px"><strong style="color:#111">GFP endguide와 LAN Viewerend가 동일 지면임을 확인 → viewer_end로 통합</strong><br>
+      <span style="color:#888;font-size:10px">LAN DA는 2026년 6월 중 네이밍이 2회 변경 (High/Mid/Low → Tier2~4 → Viewerend_Tier1~4)</span></div>
+      <div style="margin-bottom:4px"><strong style="color:#111">gacha_tier는 컬럼명과 실제 의미 불일치</strong><br>
+      <span style="color:#888;font-size:10px">전사DB 적재 중이라 컬럼명 유지 · BQ 컬럼 description으로 문서화 · 명칭 변경 가능 시점은 별도 논의</span></div>
+      <div><strong style="color:#111">2026-04 이전 manual 수집 구간은 분류 불가 — 원본 리포트에 지면 컬럼 없음</strong><br>
+      <span style="color:#888;font-size:10px">ad_unit_raw가 NULL이므로 어떤 규칙을 넣어도 분류 불가 · 지면 단위 분류 데이터는 2026-05 이후만 유효</span></div>
+    </div>
+  </div>
+
   <!-- BQ 마트 테이블 목록 -->
   <div class="full-card" style="display:none">
     <div class="card-title"><span class="dot dot-green"></span>BQ 마트 테이블 목록 — <code style="font-size:10px;background:#f3f4f6;padding:1px 5px;border-radius:3px">wads-data-platform.w_ads_data</code></div>
@@ -183,8 +244,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <tr><td><code>mart_lap</code></td><td>lap</td><td><span class="badge-da">DA</span></td><td>manual</td><td>2018-01~2025-10 (종료)</td><td>OS 전부 ETC</td></tr>
         <tr><td><code>mart_appdriver</code></td><td>AppDriver</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2018-01~2023-12 (종료)</td><td>구 오퍼월</td></tr>
         <tr><td><code>mart_offerwall_waj</code></td><td>offerwall_waj</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2026-06~현재</td><td>신규 OW</td></tr>
-        <tr><td><code>mart_offerwall_maf</code> / <code>_tbl</code></td><td>offerwall_maf</td><td><span class="badge-ow">OW</span></td><td>Google Sheets</td><td>—</td><td>③ 물리테이블 참조</td></tr>
-        <tr><td><code>mart_offerwall_kurashiru</code> / <code>_tbl</code></td><td>offerwall_kurashiru</td><td><span class="badge-ow">OW</span></td><td>Google Sheets</td><td>—</td><td>確定 전 生 기준 · 정책 결정 필요</td></tr>
         <tr><td><code>mart_fluct_ebj</code></td><td>fluct_ebj</td><td><span class="badge-rv">RV</span></td><td>manual</td><td>2025-01~현재</td><td>EBJ 계정 · manual only</td></tr>
         <tr><td><code>mart_skyflag_ebj</code></td><td>skyflag_ebj</td><td><span class="badge-ow">OW</span></td><td>manual</td><td>2025-01~현재</td><td>EBJ 계정 · manual only</td></tr>
         <tr><td><code>mart_direct_sales</code></td><td>rv_direct/da_direct</td><td><span class="badge-da">DA</span><span class="badge-ow">OW</span></td><td>Google Sheets</td><td>2025-01~현재</td><td>LM 전용 · DA는 L2 합산 · OW는 L3-KPI에서 별도 역산</td></tr>
@@ -204,14 +263,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <tr><td><code>mart_dau_ebj</code> / <code>mart_dau_ebj_tbl</code></td><td><span class="badge-ref">DAU</span></td><td>EBJ 일별 활성유저</td><td>Google Sheets 연동 · View+물리테이블</td></tr>
         <tr><td><code>dim_ad_unit_ack</code></td><td><span class="badge-dim">분류규칙</span></td><td>ad_unit_raw 값 확인·승인 목록</td><td>미매핑 ad_unit 검수용</td></tr>
         <tr><td><code>dim_network_ad_type_rules</code></td><td><span class="badge-dim">분류규칙</span></td><td>DA/RV/OW 분류 규칙 정의</td><td>네트워크별 ad_type 구분값 확인</td></tr>
-        <tr><td><code>dim_ad_unit_mapping_audit</code></td><td><span class="badge-dim">모니터링</span></td><td>지면 매핑 감사 (2026-07-29 신설)</td><td>판정 규칙 14종 (error 7 · warn 7) · Schema Map 연동</td></tr>
-        <tr><td><code>v_classification_drift_check</code></td><td><span class="badge-dim">모니터링</span></td><td>신규값 감지</td><td style="color:#DC2626">실체 확인 필요 — 핸드오프 목록 확정 전 정리</td></tr>
+        <tr><td><code>v_classification_drift_check</code></td><td><span class="badge-dim">모니터링</span></td><td>신규값 감지</td><td></td></tr>
         <tr><td><code>ad_date_parts</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>표준 날짜 파생컬럼 7종 생성</td><td>ad_date·ad_year·ad_quarter·ad_month·ad_day·ad_weeknum·dt</td></tr>
-        <tr><td><code>ad_category</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>카테고리 분류 <code>(ad_type, ad_unit_src)</code></td><td>DA=지면 구분 · RV=방식 구분 · 미해당 시 ETC</td></tr>
-        <tr><td><code>gacha_tier</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>광고 열람 가능 횟수 <code>(network, ad_cat, ad_unit_src)</code></td><td>10 / 55 / NONE · gacha 행에만 값 존재</td></tr>
-        <tr><td><code>ad_detail</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>bidding group <code>(network, ad_unit_src)</code></td><td>네트워크별 표기 상이 · 네트워크 간 직접 비교 불가</td></tr>
-        <tr><td><code>lan_classification</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>LINE Ad Network slot_name RV/DA 분기</td><td></td></tr>
-        <tr><td><code>std_os</code> (UDF)</td><td><span class="badge-dim">함수</span></td><td>OS 표준화 <code>(device_type)</code></td><td>iOS · Android · ETC</td></tr>
       </tbody>
     </table>
 
@@ -284,7 +337,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="item">
         <div class="item-check pending"></div>
         <div class="item-wrap">
-          <span><span class="tag-phase tag-p3">P3</span>전사 트래픽 데이터 적재 검토</span>
+          <span><span class="tag-phase tag-p3">P3</span>이케다상 전사 트래픽 데이터 적재 검토</span>
           <div class="item-sub">수령한 트래픽 데이터 구조 파악 · BQ 적재 방식 결정</div>
         </div>
         <span class="tag tag-inprogress">진행 중</span>
@@ -293,185 +346,76 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="item-check pending"></div>
         <div class="item-wrap">
           <span><span class="tag-phase tag-p3">P3</span>Direct Sales 자동화 적용 방식 검토</span>
-          <div class="item-sub">Skyfall · GFP 리포트 적재 방식 검토 완료 · 자동화 방식 확정 예정</div>
+          <div class="item-sub">Skyfall · GFP 리포트 수령 완료 · 자동화 방식 확정 예정</div>
         </div>
         <span class="tag tag-inprogress">검토 중</span>
       </div>
-      <div class="item">
-        <div class="item-check pending"></div>
-        <div class="item-wrap">
-          <span><span class="tag-phase tag-p4">P4</span>BQ 조회 비용 최적화 검토</span>
-          <div class="item-sub">BI·WDL 연동 시 조회 비용 추산 · 전체 기간 vs 2~3개월 제한 비교 · 비용 청구 계정 변경 요청 (찐님 → 김현미 계정)</div>
-        </div>
         <span class="tag tag-inprogress">검토 중</span>
       </div>
     </div>
-  </div>
-
-  <!-- 광고 분류 컬럼 정의 재정비 -->
-
-  <div class="full-card">
-    <div class="card-title"><span class="dot dot-red"></span>광고 분류 컬럼 정의 재정비 — 적용 완료 (2026-07-29)</div>
-
-    <div class="info-card" style="margin-bottom:8px">
-      컬럼 추가·삭제 없이 기존 3개 컬럼의 <strong>정의만</strong> 재정의 · 전사DB 적재 스키마 변경 없음 · <strong>총 매출 불변</strong>(전 마트 스냅샷 대비 0원 차이 검증 완료)
-    </div>
-
-    <div class="section-banner-gray">① 컬럼별 정의 — <code style="font-size:10px;background:#f3f4f6;padding:1px 5px;border-radius:3px">ad_type</code> 기준 이중 정의</div>
-    <table class="mart-table" style="margin-bottom:10px">
-      <colgroup><col style="width:16%"><col style="width:42%"><col style="width:42%"></colgroup>
-      <thead><tr><th>컬럼</th><th><span class="badge-da">DA</span> 광고</th><th><span class="badge-rv">RV</span> 광고</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><code>ad_category</code></td>
-          <td><strong>지면 구분</strong><div class="item-sub">viewer_end · splash · episode_list · more · main · pha · ETC</div></td>
-          <td><strong>광고 방식 구분</strong><div class="item-sub">gacha · read · TEST · ETC</div></td>
-        </tr>
-        <tr>
-          <td><code>gacha_tier</code></td>
-          <td style="color:#aaa">해당 없음 (NULL)</td>
-          <td><strong>광고 열람 가능 횟수</strong><div class="item-sub">10 · 55 · NONE</div></td>
-        </tr>
-        <tr>
-          <td><code>ad_detail</code></td>
-          <td colspan="2"><strong>bidding group</strong> — DA·RV 공통<div class="item-sub">LAN: T1~T5 / High·Mid·Low / 금액 &nbsp;·&nbsp; ironsource: 숫자구간 &nbsp;·&nbsp; maio: 円금액 &nbsp;·&nbsp; GFP: T0~T2</div></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="section-banner-gray">② 주요 변경점</div>
-    <div style="margin-bottom:10px">
-      <div class="item">
-        <div class="item-wrap">
-          <span><code>10</code>/<code>55</code>는 bidding tier가 아니라 <strong>광고 열람 가능 횟수</strong></span>
-          <div class="item-sub">bidding group은 <code>ad_detail</code>로 일원화. ironsource·maio의 tier 값이 <code>gacha_tier</code>에서 <code>ad_detail</code>로 이동</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="item-wrap">
-          <span>bidding group 표기 체계가 네트워크마다 달라 <strong>네트워크 간 tier 직접 비교 불가</strong></span>
-          <div class="item-sub">필터·집계 시 네트워크별 스코프 필요 (LAN은 T1~T5, GFP는 T0~T2로 구간 수 자체가 다름)</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="item-wrap">
-          <span>GFP <code>endguide</code>와 LAN <code>Viewerend</code>가 동일 지면임을 확인 → <code>viewer_end</code>로 통합</span>
-          <div class="item-sub">LAN DA는 2026년 6월 중 네이밍이 2회 변경 (High/Mid/Low → Tier2~4 → Viewerend_Tier1~4)</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="item-wrap">
-          <span><code>gacha_tier</code>는 컬럼명과 실제 의미가 불일치</span>
-          <div class="item-sub">전사DB 적재 중이라 컬럼명 유지 · BQ 컬럼 description으로 문서화 · 명칭 변경 가능 시점은 별도 논의</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="item-wrap">
-          <span><strong>2026-04 이전 manual 수집 구간은 분류 불가</strong> — 원본 리포트에 지면 컬럼 없음</span>
-          <div class="item-sub"><code>ad_unit_raw</code>가 NULL이므로 어떤 규칙을 넣어도 분류 불가 · 지면 단위 분류 데이터는 <strong>2026-05 이후만 유효</strong></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-banner-amber">③ 매핑 오류 확인 — Schema Map에서 조회 가능</div>
-    <div style="font-size:11.5px;color:#555;line-height:1.55;margin-bottom:7px">
-      <code>dim_ad_unit_mapping_audit</code> 뷰 신설 · 자체구축 BI의 Schema Map 페이지에 연동.
-      네트워크 원본 컬럼 → <code>ad_unit_raw</code> → 변환된 3개 컬럼을 한 줄로 펼치고 이상 케이스에 사유·심각도를 부여합니다. 판정 규칙 14종(error 7 · warn 7).
-      <a href="https://dev-jp-ads-dashboard.io.naver.com/schema" target="_blank" style="color:#185FA5">Schema Map 바로가기 →</a>
-    </div>
-    <table class="mart-table" style="margin-bottom:6px">
-      <colgroup><col style="width:16%"><col style="width:12%"><col style="width:20%"><col style="width:52%"></colgroup>
-      <thead><tr><th>상태</th><th style="text-align:right">지면 수</th><th style="text-align:right">매출</th><th>내용</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><span style="color:#DC2626;font-weight:500">조치 필요</span></td>
-          <td style="text-align:right">15</td>
-          <td style="text-align:right">¥106,846,842</td>
-          <td>규칙 누락 · 정의 모순 · 카테고리 교차 오염 등</td>
-        </tr>
-        <tr>
-          <td><span style="color:#BA7517;font-weight:500">확인 필요</span></td>
-          <td style="text-align:right">82</td>
-          <td style="text-align:right">¥245,573,365</td>
-          <td>세부정보 없음 · 신규 등장(30일내) · 수집 중단(14일+) 등</td>
-        </tr>
-        <tr>
-          <td><span style="color:#00A84B;font-weight:500">정상</span></td>
-          <td style="text-align:right">282</td>
-          <td style="text-align:right">¥1,131,483,152</td>
-          <td>—</td>
-        </tr>
-      </tbody>
-    </table>
-    <div style="font-size:10px;color:#999;line-height:1.5;margin-bottom:10px">
-      ※ 2026-05-01 ~ 07-28 기준. 조치 필요 15건 중 <strong>12건(¥102.7M)은 LAN DA의 이미 중단된 과거 네이밍</strong>으로,
-      슬롯명에 지면 정보가 없어 의도적으로 미분류 처리했습니다. <strong>실제 진행 중인 미분류는 3건(¥4,099,383 · 전체의 0.28%)</strong>입니다.
-    </div>
-
-    <div class="section-banner-gray">④ 확인 요청 사항</div>
-    <div class="confirm-row">
-      <div class="confirm-num">1</div>
-      <div class="confirm-text">
-        전사DB의 3개 컬럼 참조 로직 확인
-        <div class="confirm-sub">전사DB는 L1 마트를 직접 조회합니다. <strong>스키마 변경이 아니라 값 의미 변경이므로 에러 없이 수치만 달라집니다.</strong> 특히 <code>ad_category = 'endguide'</code> → <code>'viewer_end'</code>, ironsource·maio tier의 <code>gacha_tier</code> → <code>ad_detail</code> 이동 구간</div>
-      </div>
-      <span class="confirm-status tag-waiting">확인 요청</span>
-    </div>
-    <div class="confirm-row">
-      <div class="confirm-num">2</div>
-      <div class="confirm-text">
-        진행 중인 미분류 3건 처리 방향
-        <div class="confirm-sub">ironsource <code>Bidding</code>(AOS·iOS), dt_exchange <code>DT_Bidding</code> — 슬롯명에 Gacha/Read 구분자가 없어 규칙 분류 불가. 네트워크 담당자 확인 또는 하드코딩 여부 결정 필요</div>
-      </div>
-      <span class="confirm-status tag-confirm">결정 필요</span>
-    </div>
-    <div class="confirm-row">
-      <div class="confirm-num">3</div>
-      <div class="confirm-text">
-        LAN DA 과거 네이밍 소급 분류 여부 (¥102.7M)
-        <div class="confirm-sub">High/Mid/Low(~06-18) · Tier2~4(06-19~24) 구간. 슬롯명에 지면 정보가 없어 패턴으로는 불가 — 과거 리포팅 정확도가 필요한 경우 하드코딩 필요</div>
-      </div>
-      <span class="confirm-status tag-confirm">결정 필요</span>
     </div>
   </div>
 
   <!-- 잔여 이슈 -->
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title" style="margin-bottom:7px"><span class="dot dot-blue"></span>자체구축 BI 대시보드 현황</div>
-      <div class="info-card" style="margin-bottom:6px">
-        🚀 <strong>배포 URL</strong> — <a href="https://dev-jp-ads-dashboard.io.naver.com/" target="_blank" style="color:#3730a3">dev-jp-ads-dashboard.io.naver.com</a>
-      </div>
-      <div class="info-card" style="margin-bottom:6px">
-        ✅ <strong>구현 완료</strong> — 다운로드(PNG/XLSX) · Schema Map · BQ 마트 연동 · 분류 컬럼 재정의 · 매핑 감사표 · 3개국어 i18n
-      </div>
-      <div class="info-card" style="margin-bottom:0">
-        🔧 <strong>예정</strong> — NEOID 인증 · RV Units 페이지 · 다운로드 확장 · AI 연동 · Prod 신설
-      </div>
-    </div>
+  <!-- 대시보드 현황 + 논의 -->
+  <div class="full-card">
+    <div class="card-title"><span class="dot dot-blue"></span>자체구축 BI 대시보드 — <a href="https://dev-jp-ads-dashboard.io.naver.com/" target="_blank" style="color:#185FA5;font-weight:400;font-size:11px">dev-jp-ads-dashboard.io.naver.com →</a></div>
 
-    <div class="card">
-      <div class="card-title" style="margin-bottom:7px"><span class="dot dot-red"></span>논의 및 수정 필요 사항</div>
-      <div class="warn-card" style="margin-bottom:6px">
-        ⚠️ <strong>분류 컬럼 3종 정의 재정비 — 영향 확인 요청</strong><br>
-        <code>ad_category</code>(DA=지면·RV=방식) / <code>gacha_tier</code>(열람 횟수) / <code>ad_detail</code>(bidding group) 정의 변경 적용 완료 · 스키마·매출 불변이나 <strong>값 의미가 바뀌어 참조 로직이 있으면 수치가 달라짐</strong> · 상세는 위 섹션 참고
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+      <!-- 좌: 구현완료 + 예정 -->
+      <div>
+        <div style="font-size:10.5px;font-weight:600;color:#166534;margin-bottom:5px">✅ 구현 완료</div>
+        <div style="font-size:11px;color:#555;line-height:1.8;padding-left:4px">
+          · Revenue 페이지 다운로드 (PNG/XLSX)<br>
+          · Schema Map (분류 규칙 · 필터 · 요약 카드)<br>
+          · BQ 마트 연동 · dev 배포 완료
+        </div>
+
+        <div style="font-size:10.5px;font-weight:600;color:#185FA5;margin-top:10px;margin-bottom:5px">🔜 예정</div>
+        <div style="font-size:11px;color:#555;line-height:1.9;padding-left:4px">
+          1. <strong>NEOID 인증</strong> — 현재 None (사내 IP 접근 제한) · 추가 인증 레이어 필요 여부 확인 · 옵션: None / Naver ID / Naver ID(OAuth2) / Naver ID(OAuth2 to Cookie) / NEOID / NEOID(OAuth2)<br>
+          2. <strong>RV Unit 별도 확인 페이지 신설</strong> — read/gacha 구분 · bidding group 구분<br>
+          3. <strong>다운로드 기능 확장</strong> — Executive · Networks · Ad Units 등 타 페이지<br>
+          4. <strong>AI 연동</strong> — 방향성 논의 필요 (아래 참고)<br>
+          5. <strong>dev / prod 분리 신설</strong>
+        </div>
       </div>
-      <div class="warn-card" style="margin-bottom:6px">
-        ⚠️ <strong>L2 통합 마트에 분류 컬럼 적재 여부 결정 필요</strong><br>
-        <code>ad_unit_raw</code> · <code>ad_category</code> · <code>gacha_tier</code> · <code>ad_detail</code> 4개 컬럼은 현재 <strong>L1에만 존재</strong>하고 L2(DA·RV·OW)에는 없음 → 자체구축 BI의 지면·티어 필터가 전부 <code>Unknown</code>으로 표시됨 · <strong>RV Units 페이지 및 read/gacha·bidding group 구분 기능의 선행 조건</strong> · 적재 시 집계 그레인이 세분화되어 행 수·조회 비용이 증가하므로 <strong>아래 BQ 조회 비용 추산 결과와 함께 결정</strong>
+
+      <!-- 우: 논의 및 수정 필요 -->
+      <div>
+        <div style="font-size:10.5px;font-weight:600;color:#991B1B;margin-bottom:5px">⚠️ 논의 및 수정 필요</div>
+
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <tr style="border-bottom:0.5px solid #f0f0f0">
+            <td style="padding:5px 4px;vertical-align:top;color:#991B1B;font-weight:600;white-space:nowrap;width:16px">1.</td>
+            <td style="padding:5px 4px 5px 6px;vertical-align:top;color:#555;line-height:1.6">
+              <strong style="color:#111">광고 분류 컬럼 3종 재정비</strong> — 최종 확인 후 반영 필요<br>
+              <span style="color:#888;font-size:10px">· L2 반영 여부 검토 · 미분류건 처리 방향 결정 (unknown 태깅 or NULL 유지 or 별도 모니터링) · LAN HIGH/MID/LOW 구분값 추가 여부</span>
+            </td>
+          </tr>
+          <tr style="border-bottom:0.5px solid #f0f0f0">
+            <td style="padding:5px 4px;vertical-align:top;color:#991B1B;font-weight:600;white-space:nowrap">2.</td>
+            <td style="padding:5px 4px 5px 6px;vertical-align:top;color:#555;line-height:1.6">
+              <strong style="color:#111">L2에 분류 컬럼 적재 여부</strong> — read_or_gacha · tier 컬럼 L2 반영 여부
+            </td>
+          </tr>
+          <tr style="border-bottom:0.5px solid #f0f0f0">
+            <td style="padding:5px 4px;vertical-align:top;color:#991B1B;font-weight:600;white-space:nowrap">3.</td>
+            <td style="padding:5px 4px 5px 6px;vertical-align:top;color:#555;line-height:1.6">
+              <strong style="color:#111">KPI 집계 규칙 수정</strong> — DS KPI는 DA·OW에 이미 포함 → Total 집계 시 합산 제외 필요
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:5px 4px;vertical-align:top;color:#991B1B;font-weight:600;white-space:nowrap">4.</td>
+            <td style="padding:5px 4px 5px 6px;vertical-align:top;color:#555;line-height:1.6">
+              <strong style="color:#111">AI 연동 방향 결정</strong> — Open Models API(Gemma) 지원 종료 예정<br>
+              <span style="color:#888;font-size:10px">① 기발급 Gemma Key 전달받아 초기 운영 or ② Commercial API 전환 (claude-haiku-4.5 등)</span>
+            </td>
+          </tr>
+        </table>
       </div>
-      <div class="warn-card" style="margin-bottom:6px">
-        ⚠️ <strong>KPI 집계 규칙 수정</strong><br>
-        DS KPI는 DA·OW KPI에 이미 포함 → DS 목표 집계 시만 사용, Total 집계 시 합산 대상에서 제외 필요
-      </div>
-      <div class="warn-card" style="margin-bottom:6px">
-        ⚠️ <strong>NEOID 등 추가 인증 방식 적용 여부</strong><br>
-        현재 임시 None 인증 운영 중 · NEOID Consumer Key/Service Code 발급 및 적용 여부 결정 필요
-      </div>
-      <div class="warn-card" style="margin-bottom:0">
-        ⚠️ <strong>AI 연동 방향 결정</strong><br>
-        현재 Open Models API (Gemma) 연동 · 지원 종료 예정 → ① Gemma 초기 운영 (기발급 API Key 전달 필요) or ② Commercial API 전환 (claude-haiku-4.5 등) 결정 필요
-      </div>
+
     </div>
   </div>
 
